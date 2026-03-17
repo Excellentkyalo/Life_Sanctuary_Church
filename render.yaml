@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: life-sanctuary-church
+    env: python
+    region: frankfurt
+    plan: free
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
+    startCommand: gunicorn Life_Sanctuary_Church.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: MPESA_ENVIRONMENT
+        value: sandbox
+      - key: AFRICASTALKING_USERNAME
+        value: sandbox
+    disk:
+      name: media
+      mountPath: /opt/render/project/src/media
+      sizeGB: 1
