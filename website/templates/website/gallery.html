@@ -1,0 +1,225 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Gallery - {{ site_settings.church_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .gallery-hero {
+        margin-top: 80px;
+        min-height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(45, 27, 78, 0.9) 0%, rgba(74, 44, 122, 0.9) 100%);
+    }
+    
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 3rem 5%;
+    }
+    
+    .gallery-item {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+    }
+    
+    .gallery-item:hover {
+        transform: scale(1.05);
+        border-color: var(--primary-gold);
+    }
+    
+    .gallery-item img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        display: block;
+    }
+    
+    .gallery-item-info {
+        padding: 1.5rem;
+    }
+    
+    .gallery-item-info h4 {
+        color: var(--primary-gold);
+        margin-bottom: 0.5rem;
+        font-family: 'Cinzel', serif;
+    }
+    
+    .gallery-item-info p {
+        color: var(--off-white);
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    .video-item {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        border-radius: 15px;
+        overflow: hidden;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+    }
+    
+    .video-item iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+    
+    .gallery-categories {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 2rem 0;
+        padding: 0 5%;
+    }
+    
+    .category-btn {
+        padding: 0.8rem 2rem;
+        background: var(--glass-bg);
+        border: 1px solid var(--primary-gold);
+        border-radius: 50px;
+        color: var(--primary-gold);
+        text-decoration: none;
+        font-family: 'Cinzel', serif;
+        transition: all 0.3s ease;
+    }
+    
+    .category-btn:hover, .category-btn.active {
+        background: var(--primary-gold);
+        color: var(--deep-purple);
+    }
+    
+    .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .lightbox.active {
+        display: flex;
+    }
+    
+    .lightbox img {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 10px;
+    }
+    
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 3rem;
+        color: var(--white);
+        cursor: pointer;
+        background: none;
+        border: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Gallery Hero -->
+<section class="gallery-hero">
+    <div class="hero-content">
+        <div class="hero-badge">Memories</div>
+        <h1 style="font-family: 'Playfair Display', serif; color: var(--primary-gold);">Media Gallery</h1>
+        <p style="color: var(--off-white); max-width: 600px; margin: 1.5rem auto;">
+            Browse photos and videos from our church events and services
+        </p>
+    </div>
+</section>
+
+<!-- Gallery Categories -->
+<section class="mvp-section">
+    <div class="gallery-categories">
+        <a href="{% url 'gallery' %}" class="category-btn {% if not request.resolver_match.url_name == 'gallery_category' %}active{% endif %}">All</a>
+        {% for category in categories %}
+        <a href="{% url 'gallery_category' category.slug %}" class="category-btn {% if request.resolver_match.url_name == 'gallery_category' and request.resolver_match.kwargs.slug == category.slug %}active{% endif %}">
+            {{ category.name }}
+        </a>
+        {% endfor %}
+    </div>
+    
+    <!-- Images -->
+    <div class="gallery-grid">
+        {% for image in images %}
+        <div class="gallery-item fade-in" onclick="openLightbox('{{ image.image.url }}')">
+            <img src="{{ image.image.url }}" alt="{{ image.title }}">
+            <div class="gallery-item-info">
+                <h4>{{ image.title|default:"Gallery Image" }}</h4>
+                <p>{{ image.description|truncatewords:15 }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 4rem;">
+            <i class="fas fa-images fa-3x" style="color: var(--primary-gold); margin-bottom: 1rem;"></i>
+            <p>No images yet. Check back soon!</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Videos -->
+    {% if videos %}
+    <div class="gallery-grid" style="margin-top: 3rem;">
+        <h2 style="grid-column: 1/-1; text-align: center; color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 2rem;">Videos</h2>
+        {% for video in videos %}
+        <div class="video-item fade-in">
+            <iframe src="" title="{{ video.title }}" allowfullscreen></iframe>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close">&times;</button>
+    <img id="lightbox-img" src="" alt="Full size">
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Close on escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeLightbox();
+    }
+});
+</script>
+{% endblock %}

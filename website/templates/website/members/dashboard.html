@@ -1,0 +1,495 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard - {{ site_settings.church_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-hero {
+        margin-top: 80px;
+        min-height: 40vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(45, 27, 78, 0.9) 0%, rgba(74, 44, 122, 0.9) 100%);
+    }
+    
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 3rem 5%;
+    }
+    
+    .dashboard-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+    }
+    
+    .dashboard-card:hover {
+        border-color: var(--primary-gold);
+        transform: translateY(-5px);
+    }
+    
+    .dashboard-card h3 {
+        color: var(--primary-gold);
+        font-family: 'Cinzel', serif;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .dashboard-card h3 i {
+        font-size: 1.5rem;
+    }
+    
+    .stat-card {
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary-gold);
+        font-family: 'Cinzel', serif;
+    }
+    
+    .stat-label {
+        color: var(--secondary-gold);
+        font-size: 1rem;
+        margin-top: 0.5rem;
+    }
+    
+    .member-item, .donation-item, .event-item, .message-item {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .member-item:last-child, .donation-item:last-child, .event-item:last-child, .message-item:last-child {
+        border-bottom: none;
+    }
+    
+    .donation-amount {
+        color: var(--primary-gold);
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+    
+    .status-badge {
+        padding: 0.3rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    .status-completed {
+        background: rgba(46, 204, 113, 0.2);
+        color: #2ecc71;
+    }
+    
+    .status-pending {
+        background: rgba(241, 196, 15, 0.2);
+        color: #f1c40f;
+    }
+    
+    .status-unread {
+        background: rgba(231, 76, 60, 0.2);
+        color: #e74c3c;
+    }
+    
+    .admin-section {
+        grid-column: 1 / -1;
+    }
+    
+    .quick-actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+    }
+    
+    .action-btn {
+        padding: 1rem 2rem;
+        background: var(--glass-bg);
+        border: 1px solid var(--primary-gold);
+        border-radius: 50px;
+        color: var(--primary-gold);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .action-btn:hover {
+        background: var(--primary-gold);
+        color: var(--deep-purple);
+    }
+    
+    .profile-summary {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--primary-gold);
+    }
+    
+    .profile-info h2 {
+        color: var(--primary-gold);
+        font-family: 'Cinzel', serif;
+        margin-bottom: 0.5rem;
+    }
+    
+    .profile-info p {
+        color: var(--secondary-gold);
+    }
+    
+    .badge-admin {
+        background: var(--primary-gold);
+        color: var(--deep-purple);
+        padding: 0.3rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-left: 1rem;
+    }
+    
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    table th, table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    table th {
+        color: var(--primary-gold);
+        font-family: 'Cinzel', serif;
+    }
+    
+    table td {
+        color: var(--off-white);
+    }
+    
+    .view-all-link {
+        color: var(--primary-gold);
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: inline-block;
+        margin-top: 1rem;
+    }
+    
+    .view-all-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Dashboard Hero -->
+<section class="dashboard-hero">
+    <div class="hero-content">
+        <div class="hero-badge">Admin Portal</div>
+        <h1 style="color: var(--primary-gold);">
+            Admin Dashboard 
+            <span class="badge-admin">{{ user.first_name|default:user.username }}</span>
+        </h1>
+        <p style="color: var(--off-white);">Monitor and manage church members & activities</p>
+    </div>
+</section>
+
+<!-- Dashboard Content -->
+<section class="mvp-section">
+    <div class="dashboard-grid">
+        <!-- Profile Summary -->
+        <div class="dashboard-card fade-in admin-section">
+            <div class="profile-summary">
+                {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="Profile" class="profile-avatar">
+                {% else %}
+                <div class="profile-avatar" style="background: var(--primary-gold); display: flex; align-items: center; justify-content: center; color: var(--deep-purple); font-size: 2.5rem;">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                {% endif %}
+                <div class="profile-info">
+                    <h2>{{ user.first_name|default:user.username }} {{ user.last_name }} <span class="badge-admin">ADMIN</span></h2>
+                    <p><i class="fas fa-envelope"></i> {{ user.email }}</p>
+                    <p><i class="fas fa-shield-alt"></i> {% if user.is_superuser %}Superuser{% elif user.is_staff %}Staff{% endif %}</p>
+                    <p><i class="fas fa-calendar"></i> Member since {{ user.date_joined|date:"M d, Y" }}</p>
+                </div>
+                <div style="margin-left: auto;">
+                    <a href="{% url 'profile' %}" class="btn btn-primary">Edit Profile</a>
+                    <a href="{% url 'admin:index' %}" class="btn btn-secondary" style="margin-left: 1rem;">Django Admin</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="dashboard-card stat-card fade-in">
+            <div class="stat-number">{{ total_members }}</div>
+            <div class="stat-label">Total Members</div>
+        </div>
+        
+        <div class="dashboard-card stat-card fade-in">
+            <div class="stat-number">KES {{ total_donations|floatformat:0 }}</div>
+            <div class="stat-label">Total Donations</div>
+        </div>
+        
+        <div class="dashboard-card stat-card fade-in">
+            <div class="stat-number">{{ unread_messages }}</div>
+            <div class="stat-label">Unread Messages</div>
+        </div>
+        
+        <div class="dashboard-card stat-card fade-in">
+            <div class="stat-number">{{ all_event_registrations.count }}</div>
+            <div class="stat-label">Event Registrations</div>
+        </div>
+        
+        <!-- Recent Members -->
+        <div class="dashboard-card fade-in">
+            <h3><i class="fas fa-users"></i> Recent Members</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for member in recent_members %}
+                        <tr>
+                            <td>{{ member.first_name|default:member.username }} {{ member.last_name }}</td>
+                            <td>{{ member.email }}</td>
+                            <td>{{ member.date_joined|date:"M d, Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: var(--secondary-gold);">No members yet</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{% url 'admin:auth_user_changelist' %}" class="view-all-link">View All Members →</a>
+        </div>
+        
+        <!-- Recent Donations -->
+        <div class="dashboard-card fade-in">
+            <h3><i class="fas fa-hand-holding-heart"></i> Recent Donations</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Donor</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for donation in all_donations %}
+                        <tr>
+                            <td>{{ donation.donor_name|default:"Anonymous" }}</td>
+                            <td class="donation-amount">KES {{ donation.amount|floatformat:0 }}</td>
+                            <td>
+                                <span class="status-badge status-{{ donation.status }}">
+                                    {{ donation.get_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: var(--secondary-gold);">No donations yet</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{% url 'admin:website_donation_changelist' %}" class="view-all-link">View All Donations →</a>
+        </div>
+        
+        <!-- Event Registrations -->
+        <div class="dashboard-card fade-in">
+            <h3><i class="fas fa-calendar-alt"></i> Event Registrations</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Event</th>
+                            <th>Guests</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reg in all_event_registrations %}
+                        <tr>
+                            <td>{{ reg.first_name }} {{ reg.last_name }}</td>
+                            <td>{{ reg.event.title }}</td>
+                            <td>{{ reg.number_of_guests }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: var(--secondary-gold);">No registrations yet</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{% url 'admin:website_eventregistration_changelist' %}" class="view-all-link">View All →</a>
+        </div>
+        
+        <!-- Unread Messages -->
+        <div class="dashboard-card fade-in">
+            <h3><i class="fas fa-envelope"></i> Contact Messages</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for message in recent_messages %}
+                        <tr>
+                            <td>{{ message.name }}</td>
+                            <td>{{ message.subject|truncatechars:30 }}</td>
+                            <td>
+                                <span class="status-badge {% if not message.is_read %}status-unread{% else %}status-completed{% endif %}">
+                                    {% if message.is_read %}Read{% else %}Unread{% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: var(--secondary-gold);">No messages yet</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{% url 'admin:website_contactmessage_changelist' %}" class="view-all-link">View All Messages →</a>
+        </div>
+        
+        <!-- Prayer Requests -->
+        <div class="dashboard-card fade-in">
+            <h3><i class="fas fa-praying-hands"></i> Prayer Requests</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Request</th>
+                            <th>Public</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in prayer_requests %}
+                        <tr>
+                            <td>{{ request.name|default:"Anonymous" }}</td>
+                            <td>{{ request.request|truncatechars:40 }}</td>
+                            <td>{% if request.is_public %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: var(--secondary-gold);">No prayer requests yet</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{% url 'admin:website_prayerrequest_changelist' %}" class="view-all-link">View All →</a>
+        </div>
+        
+        <!-- Volunteer Applications -->
+        <div class="dashboard-card fade-in">
+            <h3><i class="fas fa-hands-helping"></i> Volunteer Applications</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Member</th>
+                            <th>Ministry</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in volunteer_apps %}
+                        <tr>
+                            <td>{{ app.member.user.first_name|default:app.member.user.username }}</td>
+                            <td>{{ app.ministry_interest }}</td>
+                            <td>
+                                <span class="status-badge status-{{ app.status }}">
+                                    {{ app.get_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: var(--secondary-gold);">No applications yet</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{% url 'admin:website_volunteerapplication_changelist' %}" class="view-all-link">View All →</a>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="dashboard-card fade-in admin-section">
+            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+            <div class="quick-actions">
+                <a href="{% url 'admin:index' %}" class="action-btn">
+                    <i class="fas fa-cog"></i> Django Admin
+                </a>
+                <a href="{% url 'admin:website_ministry_changelist' %}" class="action-btn">
+                    <i class="fas fa-church"></i> Manage Ministries
+                </a>
+                <a href="{% url 'admin:website_sermon_changelist' %}" class="action-btn">
+                    <i class="fas fa-book-bible"></i> Manage Sermons
+                </a>
+                <a href="{% url 'admin:website_event_changelist' %}" class="action-btn">
+                    <i class="fas fa-calendar"></i> Manage Events
+                </a>
+                <a href="{% url 'admin:website_donation_changelist' %}" class="action-btn">
+                    <i class="fas fa-hand-holding-heart"></i> View Donations
+                </a>
+                <a href="{% url 'logout' %}" class="action-btn" style="border-color: #e74c3c; color: #e74c3c;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

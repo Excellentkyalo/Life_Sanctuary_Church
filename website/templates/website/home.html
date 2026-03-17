@@ -1,0 +1,27 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Home - {{ site_settings.church_name|default:"Life Sanctuary Church International" }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <div class="hero-badge">Welcome to the House of Prayer for all nations</div>
+        <h1>{{ site_settings.church_name|default:"Life Sanctuary Church International" }}</h1>
+        <h2>OUR CHURCH MOTTO:</h2>
+        <p class="hero-motto">"{{ site_settings.motto|default:"Pray without ceasing" }}"</p>
+        <p class="hero-scripture">{{ site_settings.motto_scripture|default:"1 Thessalonians 5:17" }}</p>
+        <p class="hero-description">
+            Experience the presence of God in an atmosphere of love, worship, and spiritual nourishment.
+        </p>
+        <div class="hero-buttons">
+            <a href="{% url 'services' %}" class="btn btn-primary">Join Us This Sunday</a>
+            <a href="{% url 'contact' %}" class="btn btn-secondary">Get in Touch</a>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}

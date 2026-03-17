@@ -1,0 +1,365 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Give - {{ site_settings.church_name|default:"Life Sanctuary Church International" }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .donate-hero {
+        margin-top: 80px;
+        min-height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(45, 27, 78, 0.9) 0%, rgba(74, 44, 122, 0.9) 100%);
+    }
+    
+    .donate-form-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        max-width: 500px;
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    .donate-form-card h3 {
+        font-family: 'Cinzel', serif;
+        color: var(--primary-gold);
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        color: var(--secondary-gold);
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        font-family: 'Cinzel', serif;
+    }
+    
+    .form-control-custom {
+        width: 100%;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        color: var(--white);
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+    }
+    
+    .form-control-custom:focus {
+        outline: none;
+        border-color: var(--primary-gold);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    }
+    
+    .btn-donate {
+        width: 100%;
+        padding: 1.2rem;
+        background: linear-gradient(135deg, var(--primary-gold) 0%, var(--secondary-gold) 100%);
+        color: var(--deep-purple);
+        border: none;
+        border-radius: 50px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+    }
+    
+    .btn-donate:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+    }
+    
+    .btn-donate:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+    
+    .payment-status {
+        text-align: center;
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border-radius: 10px;
+        display: none;
+    }
+    
+    .payment-status.success {
+        display: block;
+        background: rgba(46, 204, 113, 0.2);
+        border: 1px solid #2ecc71;
+        color: #2ecc71;
+    }
+    
+    .payment-status.error {
+        display: block;
+        background: rgba(231, 76, 60, 0.2);
+        border: 1px solid #e74c3c;
+        color: #e74c3c;
+    }
+    
+    .payment-methods {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .payment-method {
+        text-align: center;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        min-width: 120px;
+    }
+    
+    .payment-method i {
+        font-size: 2rem;
+        color: var(--primary-gold);
+        margin-bottom: 0.5rem;
+    }
+    
+    .payment-method p {
+        color: var(--secondary-gold);
+        font-size: 0.85rem;
+        margin: 0;
+    }
+    
+    .payment-method strong {
+        color: var(--primary-gold);
+        font-size: 1.1rem;
+        display: block;
+        margin-top: 0.3rem;
+    }
+    
+    .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top-color: var(--deep-purple);
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 10px;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Donate Hero -->
+<section class="donate-hero">
+    <div class="hero-content">
+        <div class="hero-badge">Give Cheerfully</div>
+        <h1 style="font-family: 'Playfair Display', serif; color: var(--primary-gold);">Support The Ministry</h1>
+        <p style="color: var(--off-white); max-width: 600px; margin: 1.5rem auto;">
+            Your generosity helps us spread the Gospel and serve the community.
+        </p>
+    </div>
+</section>
+
+<!-- Donation Form Section -->
+<section class="mvp-section">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 5%;">
+        <div class="section-header fade-in">
+            <div class="section-badge">Secure Payment</div>
+            <h2 class="section-title">Make a Donation</h2>
+        </div>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: center;">
+            <!-- M-Pesa Form -->
+            <div style="flex: 1; min-width: 300px; max-width: 500px;">
+                <div class="donate-form-card fade-in">
+                    <h3><i class="fas fa-mobile-alt"></i> M-Pesa Payment</h3>
+                    
+                    <form id="donationForm">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="purpose">Donation Purpose</label>
+                            <select class="form-control-custom" id="purpose" required>
+                                <option value="" disabled selected>Select purpose</option>
+                                <option value="Tithe">Tithe</option>
+                                <option value="Offering">Offering</option>
+                                <option value="Building Project">Building Project</option>
+                                <option value="Missions">Missions</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="amount">Amount (KES)</label>
+                            <input type="number" class="form-control-custom" id="amount" 
+                                   placeholder="e.g. 1000" required min="10" step="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">M-Pesa Phone Number</label>
+                            <input type="tel" class="form-control-custom" id="phone" 
+                                   placeholder="0712345678" required>
+                            <small style="color: var(--secondary-gold); font-size: 0.8rem;">
+                                Format: 07XX or 01XX
+                            </small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="name">Your Name (Optional)</label>
+                            <input type="text" class="form-control-custom" id="name" placeholder="John Doe">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email (Optional)</label>
+                            <input type="email" class="form-control-custom" id="email" placeholder="john@example.com">
+                        </div>
+                        
+                        <button type="submit" class="btn-donate" id="submitBtn">
+                            <span id="btnText">Pay Now</span>
+                            <span id="btnLoader" style="display: none;">
+                                <span class="spinner"></span> Processing...
+                            </span>
+                        </button>
+                    </form>
+                    
+                    <div id="paymentStatus" class="payment-status"></div>
+                    
+                    <div class="payment-methods">
+                        <div class="payment-method">
+                            <i class="fas fa-building"></i>
+                            <p>Paybill Number</p>
+                            <strong>247247</strong>
+                        </div>
+                        <div class="payment-method">
+                            <i class="fas fa-user-tag"></i>
+                            <p>Account Number</p>
+                            <strong>228812</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Donation Info -->
+            <div style="flex: 1; min-width: 300px; max-width: 500px;">
+                <div class="mvp-card fade-in" style="padding: 2rem;">
+                    <h3 style="color: var(--primary-gold); margin-bottom: 1rem;"><i class="fas fa-heart"></i> General Giving</h3>
+                    <p style="color: var(--off-white); line-height: 1.8;">
+                        Your tithes and offerings help us continue our mission of spreading the Gospel 
+                        and serving our community. Every contribution makes a difference.
+                    </p>
+                    <div style="text-align: center; padding: 2rem; color: var(--primary-gold);">
+                        <i class="fas fa-hand-holding-heart" style="font-size: 3rem;"></i>
+                        <p style="margin-top: 1rem; color: var(--secondary-gold);">
+                            "Each of you should give what you have decided in your heart to give."
+                        </p>
+                        <p style="color: var(--primary-gold); font-family: 'Cinzel', serif;">
+                            - 2 Corinthians 9:7
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('donationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnLoader = document.getElementById('btnLoader');
+    const paymentStatus = document.getElementById('paymentStatus');
+    
+    const purpose = document.getElementById('purpose').value;
+    const amount = document.getElementById('amount').value;
+    const phone = document.getElementById('phone').value;
+    const name = document.getElementById('name').value || 'Anonymous';
+    const email = document.getElementById('email').value;
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    // Validate phone
+    const phonePattern = /^0[17]\d{8}$/;
+    if (!phonePattern.test(phone)) {
+        showStatus('Please enter a valid Kenyan phone number (e.g., 0712345678)', 'error');
+        return;
+    }
+    
+    // Validate amount
+    if (amount < 10) {
+        showStatus('Minimum donation amount is KES 10', 'error');
+        return;
+    }
+    
+    // Show loading
+    submitBtn.disabled = true;
+    btnText.style.display = 'none';
+    btnLoader.style.display = 'inline-block';
+    paymentStatus.className = 'payment-status';
+    paymentStatus.innerHTML = '<i class="fas fa-clock"></i> Initiating payment... Please wait.';
+    paymentStatus.style.display = 'block';
+    
+    try {
+        const response = await fetch('{% url "initiate_payment" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ phone, amount, purpose, name, email })
+        });
+        
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            showStatus(
+                '<i class="fas fa-check-circle"></i> ' + data.message + 
+                '<br><small>Check your phone and enter your M-Pesa PIN.</small>', 
+                'success'
+            );
+            setTimeout(() => { location.reload(); }, 15000);
+        } else {
+            showStatus('<i class="fas fa-exclamation-circle"></i> ' + data.message, 'error');
+            submitBtn.disabled = false;
+            btnText.style.display = 'inline-block';
+            btnLoader.style.display = 'none';
+        }
+    } catch (error) {
+        showStatus('<i class="fas fa-times-circle"></i> Network error. Please try again.', 'error');
+        submitBtn.disabled = false;
+        btnText.style.display = 'inline-block';
+        btnLoader.style.display = 'none';
+    }
+});
+
+function showStatus(message, type) {
+    const paymentStatus = document.getElementById('paymentStatus');
+    paymentStatus.className = 'payment-status ' + type;
+    paymentStatus.innerHTML = message;
+    paymentStatus.style.display = 'block';
+}
+
+// Format phone as user types
+document.getElementById('phone').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 10) value = value.substring(0, 10);
+    e.target.value = value;
+});
+</script>
+{% endblock %}

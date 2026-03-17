@@ -1,0 +1,105 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Contact - {{ site_settings.church_name }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero" style="min-height: 50vh;">
+    <div class="hero-content">
+        <div class="hero-badge">Get in Touch</div>
+        <h1>Contact Us</h1>
+        <p class="hero-description">
+            We'd love to hear from you and welcome you to our church family
+        </p>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section">
+    <div class="contact-container">
+        <div class="contact-info fade-in">
+            <h3>Contact Information</h3>
+            
+            <div class="contact-item">
+                <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="contact-details">
+                    <h4>Church Address</h4>
+                    <p>{{ site_settings.address|default:"Nairobi, Kenya" }}</p>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+                <div class="contact-details">
+                    <h4>Phone Numbers</h4>
+                    <p>Pastoral Office: {{ site_settings.phone_primary|default:"+254 713 349691" }}<br>
+                    Administrative: {{ site_settings.phone_secondary|default:"+254 722 881267" }}</p>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                <div class="contact-details">
+                    <h4>Email Address</h4>
+                    <p>{{ site_settings.email|default:"info@lifesanctuarychurch.org" }}</p>
+                </div>
+            </div>
+            
+            <div class="social-links">
+                {% if site_settings.youtube_url %}
+                <a href="{{ site_settings.youtube_url }}" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
+                {% endif %}
+                {% if site_settings.facebook_url %}
+                <a href="{{ site_settings.facebook_url }}" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                {% endif %}
+                {% if site_settings.instagram_url %}
+                <a href="{{ site_settings.instagram_url }}" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="map-container fade-in">
+            {{ site_settings.google_maps_embed|safe }}
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form -->
+<section class="mvp-section">
+    <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 5%;">
+        <div class="section-header fade-in">
+            <div class="section-badge">Send Message</div>
+            <h2 class="section-title">Contact Form</h2>
+        </div>
+        <div class="mvp-card fade-in">
+            <form method="POST">
+                {% csrf_token %}
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div>
+                        <label style="color: var(--secondary-gold); margin-bottom: 0.5rem; display: block;">Your Name *</label>
+                        <input type="text" name="name" class="form-control-custom" value="{{ form.name.value|default:'' }}" required>
+                    </div>
+                    <div>
+                        <label style="color: var(--secondary-gold); margin-bottom: 0.5rem; display: block;">Your Email *</label>
+                        <input type="email" name="email" class="form-control-custom" value="{{ form.email.value|default:'' }}" required>
+                    </div>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <label style="color: var(--secondary-gold); margin-bottom: 0.5rem; display: block;">Phone (Optional)</label>
+                    <input type="text" name="phone" class="form-control-custom" value="{{ form.phone.value|default:'' }}">
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <label style="color: var(--secondary-gold); margin-bottom: 0.5rem; display: block;">Subject *</label>
+                    <input type="text" name="subject" class="form-control-custom" value="{{ form.subject.value|default:'' }}" required>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <label style="color: var(--secondary-gold); margin-bottom: 0.5rem; display: block;">Message *</label>
+                    <textarea name="message" class="form-control-custom" rows="5" required>{{ form.message.value|default:'' }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 2rem; width: 100%;">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
