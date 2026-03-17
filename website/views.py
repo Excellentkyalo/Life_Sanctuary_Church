@@ -436,16 +436,66 @@ def newsletter_subscribe(request):
 
 # ==================== AUTHENTICATION ====================
 
+# website/views.py
 def register(request):
     """User registration view"""
+    if request.user.is_authenticated:
+        return redirect('homepage')
+    
+    # Define admin codes (store in environment variables for production)
+    ADMIN_CODES = ['ADMIN2026', 'PASTOR123', 'LEADER456']
+    
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            MemberProfile.objects.create(user=user)
+            user = form.save(commit=False)
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.email = form.cleaned_data['email']
+            user.save()
+            
+            # Get admin code
+            admin_code = form.cleaned_data.get('admin_code', '')
+            
+            # Create member profile
+            profile = MemberProfile.objects.create(
+                user=user,
+                phone=form.cleaned_data['phone'],
+                gender=form.cleaned_data['gender'],
+                admin_code=admin_code,
+            )
+            
+            # Check if admin code is valid
+            if admin_code.upper() in ADMIN_CODES:
+                profile.user_type = 'admin'
+                profile.is_admin_approved = True
+                user.is_staff = True
+                user.save()
+                profile.save()
+                messages.success(request, f'Welcome Admin {user.first_name}! You have full access.')
+            else:
+                profile.user_type = 'member'
+                profile.save()
+                messages.success(request, f'Welcome {user.first_name}! Your account has been created.')
+            
+            # Send welcome SMS
+            try:
+                from .sms_utils import SMSNotifier
+                notifier = SMSNotifier()
+                message = f"""
+WELCOME TO LIFE SANCTUARY CHURCH
+Dear {user.first_name},
+Thank you for registering with us!
+{'You have admin access.' if profile.user_type == 'admin' else 'Please login to access the church portal.'}
+God bless you!
+"""
+                if profile.full_phone:
+                    notifier.send_sms(profile.full_phone, message.strip())
+            except Exception as e:
+                print(f"Welcome SMS error: {e}")
+            
             login(request, user)
-            messages.success(request, 'Welcome! Your account has been created successfully.')
-            return redirect('dashboard')
+            return redirect('homepage')
         else:
             for field, errors in form.errors.items():
                 for error in errors:
@@ -453,24 +503,6 @@ def register(request):
     else:
         form = UserRegistrationForm()
     return render(request, 'website/members/register.html', {'form': form})
-
-def login_view(request):
-    """User login view"""
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            messages.success(request, 'Welcome back!')
-            return redirect('dashboard')
-        else:
-            messages.error(request, 'Invalid username or password')
-    
-    return render(request, 'website/members/login.html')
-
 def logout_view(request):
     """User logout view"""
     logout(request)
@@ -719,3 +751,31 @@ def volunteer_apply(request):
     else:
         form = VolunteerApplicationForm()
     return render(request, 'website/members/volunteer.html', {'form': form})
+
+def login_view(request):
+    """User login view"""
+    if request.user.is_authenticated:
+        return redirect('homepage')
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            messages.success(request, f'Welcome back, {user.first_name or user.username}!')
+            return redirect('homepage')
+        else:
+            messages.error(request, 'Invalid username or password')
+    
+    return render(request, 'website/members/login.html')
+
+
+def logout_view(request):
+    """User logout view"""
+    logout(request)
+    messages.info(request, 'You have been logged out')
+    return redirect('homepage')
+

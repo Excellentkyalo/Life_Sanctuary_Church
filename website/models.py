@@ -336,7 +336,14 @@ class MemberProfile(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    user_type = models.CharField(max_length=20, choices=[
+        ('member', 'Regular Member'),
+        ('admin_request', 'Admin Request (Pending)'),
+        ('admin', 'Church Administrator'),
+    ], default='member')
     
+    admin_code = models.CharField(max_length=50, blank=True, help_text="Admin registration code")
+    is_admin_approved = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
     

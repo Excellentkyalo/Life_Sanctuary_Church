@@ -136,7 +136,10 @@ class UserRegistrationForm(UserCreationForm):
         'placeholder': 'Last Name',
         'required': True
     }))
-    
+    admin_code = forms.CharField(max_length=50, required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control-custom',
+        'placeholder': 'Admin Code (Optional)',
+    }))
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'phone', 'gender', 'password1', 'password2']
