@@ -23,5 +23,5 @@ urlpatterns = [
     
     # ==================== ADMIN ONLY PAGES ====================
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
-        path('temp-admin-setup/', views.temp_create_admin, name='temp_admin_setup'),
+       
 ]

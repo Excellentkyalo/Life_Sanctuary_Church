@@ -8,27 +8,6 @@ from django.utils import timezone
 from .models import SiteSetting, Announcement, Ministry, Sermon, Event, ContactMessage, GalleryCategory, GalleryImage, GalleryVideo
 from .forms import ContactForm
 # ============================================
-# TEMPORARY ADMIN CREATION (DELETE AFTER USE)
-# ============================================
-import os
-from django.contrib.auth.models import User
-from django.http import HttpResponse
-
-def temp_create_admin(request):
-    # SECURITY: Only works with this exact secret code
-    secret = request.GET.get('code')
-    if secret != 'CHURCH2026SETUP':
-        return HttpResponse("🔒 Access Denied", status=403)
-
-    if not User.objects.filter(username='admin').exists():
-        User.objects.create_superuser(
-            username='admin',
-            email='kyaloexcellent@gmail.com',
-            password='Life Sanctuary Church'
-        )
-        return HttpResponse("✅ Superuser 'admin' created! Email: kyaloexcellent@gmail.com<br><br>🔴 NOW DELETE THIS CODE FROM views.py AND urls.py FOR SECURITY!")
-    return HttpResponse("👤 Admin user 'admin' already exists.")
-# ============================================
 # Helper Function: Check if user is admin
 # ============================================
 def is_admin(user):
