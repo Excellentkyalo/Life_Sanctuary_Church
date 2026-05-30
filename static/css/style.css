@@ -130,6 +130,11 @@ body {
     transition: all 0.3s ease;
 }
 
+.navbar.scrolled {
+    background: rgba(45, 27, 78, 0.98) !important;  /* Keep purple on scroll */
+    padding: 0.8rem 5%;
+}
+
 .logo {
     display: flex;
     align-items: center;

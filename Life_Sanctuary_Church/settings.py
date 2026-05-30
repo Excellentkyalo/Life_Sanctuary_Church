@@ -1,35 +1,23 @@
-# Life_Sanctuary_Church/settings.py
 import os
 from pathlib import Path
-from decouple import config
-import dj_database_url
+from decouple import config, Csv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-production')
-DEBUG = config('DEBUG', default=True, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+# Security: Read from Render Env Vars, fallback to .env or safe defaults
+SECRET_KEY = os.environ.get('SECRET_KEY', config('SECRET_KEY', default='django-insecure-local-dev-key-change-for-production'))
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    
-    
-    # Third-party
-    'crispy_forms',
-    'crispy_bootstrap5',
-    
-    # Local apps - THIS MUST BE HERE
-    'website',  # ← Make sure this exists!
+    'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
+    'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles',
+    'crispy_forms', 'crispy_bootstrap5', 'website',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ← REQUIRED FOR RENDER
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,8 +66,9 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -92,44 +81,3 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
-
-MPESA_ENVIRONMENT = config('MPESA_ENVIRONMENT', default='sandbox')
-MPESA_CONSUMER_KEY = config('MPESA_CONSUMER_KEY', default='')
-MPESA_CONSUMER_SECRET = config('MPESA_CONSUMER_SECRET', default='')
-MPESA_SHORTCODE = config('MPESA_SHORTCODE', default='174379')
-MPESA_PASSKEY = config('MPESA_PASSKEY', default='')
-MPESA_CALLBACK_URL = config('MPESA_CALLBACK_URL', default='/website/donations/mpesa/callback/')
-BASE_URL = config('BASE_URL', default='http://127.0.0.1:8000')
-
-if MPESA_ENVIRONMENT == 'sandbox':
-    MPESA_BASE_URL = 'https://sandbox.safaricom.co.ke'
-else:
-    MPESA_BASE_URL = 'https://api.safaricom.co.ke'
-
-# Africa's Talking SMS
-AFRICASTALKING_USERNAME = config('AFRICASTALKING_USERNAME', default='sandbox')
-AFRICASTALKING_API_KEY = config('AFRICASTALKING_API_KEY', default='')
-
-# SECURITY SETTINGS
-DEBUG = False  # ← Change from True to False
-
-ALLOWED_HOSTS = ['*']  # For testing, restrict later
-
-# Database for Render
-DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='sqlite:///db.sqlite3')
-    )
-}
-
-# Static Files
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Security Settings for Production
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'

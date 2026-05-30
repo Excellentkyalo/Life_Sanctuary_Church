@@ -1,26 +1,9 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
 venv/
-env/
-.env
+__pycache__/
+*.pyc
+*.pyo
 db.sqlite3
-
-# Django
-*.log
-local_settings.py
 staticfiles/
 media/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
+.env
 .DS_Store
-Thumbs.db

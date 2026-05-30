@@ -1,0 +1,1 @@
+web: gunicorn Life_Sanctuary_Church.wsgi:application

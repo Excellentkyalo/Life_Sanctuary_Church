@@ -1,143 +1,108 @@
 // static/js/main.js
+// Life Sanctuary Church - JavaScript
 
-// --- 1. LOADER LOGIC ---
-window.addEventListener('load', () => {
-    const loader = document.getElementById('loader');
-    // Wait for progress bar animation (2.5s) then fade out
-    setTimeout(() => {
-        loader.style.opacity = '0';
-        setTimeout(() => {
-            loader.style.display = 'none';
-            initHeroAnim();
-        }, 1000);
-    }, 2500);
-});
-
-// --- 2. MINISTRY TABS LOGIC ---
-function openTab(evt, tabName) {
-    // Find the parent card of the clicked button
-    const card = evt.currentTarget.closest('.ministry-card');
-    // Hide all tab content within this card
-    const tabContents = card.getElementsByClassName("tab-content");
-    for (let i = 0; i < tabContents.length; i++) {
-        tabContents[i].classList.remove("active");
-    }
-    // Remove active class from all buttons within this card
-    const tabLinks = card.getElementsByClassName("tab-btn");
-    for (let i = 0; i < tabLinks.length; i++) {
-        tabLinks[i].classList.remove("active");
-    }
-    // Show the current tab and add active class to button
-    document.getElementById(tabName).classList.add("active");
-    evt.currentTarget.classList.add("active");
-}
-
-// --- 3. MOBILE MENU TOGGLE ---
-const mobileMenu = document.querySelector('.mobile-menu');
-const navLinks = document.querySelector('.nav-links');
-const navLinksItems = document.querySelectorAll('.nav-links a');
-
-if (mobileMenu) {
-    mobileMenu.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-        navLinks.classList.toggle('active');
-        // Prevent body scroll when menu is open
-        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
-    });
-}
-
-if (navLinksItems) {
-    navLinksItems.forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            navLinks.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-    });
-}
-
-// Close menu when clicking outside
-document.addEventListener('click', (e) => {
-    if (mobileMenu && navLinks) {
-        if (!mobileMenu.contains(e.target) && !navLinks.contains(e.target)) {
-            mobileMenu.classList.remove('active');
-            navLinks.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-    }
-});
-
-// --- 4. GSAP ANIMATIONS ---
-if (typeof gsap !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-}
-
-function initHeroAnim() {
-    const fadeElements = document.querySelectorAll('.fade-in');
-    fadeElements.forEach(element => {
-        if (typeof gsap !== 'undefined') {
-            gsap.fromTo(element,
-                { opacity: 0, y: 50 },
-                {
-                    opacity: 1, y: 0, duration: 1, ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: element,
-                        start: "top 85%",
-                        toggleActions: "play none none reverse"
-                    }
-                }
-            );
-        } else {
-            element.classList.add('visible');
-        }
-    });
-}
-
-// Navbar scroll effect
-const navbar = document.querySelector('.navbar');
-if (navbar) {
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) {
-            navbar.style.background = 'rgba(45, 27, 78, 0.98)';
-            navbar.style.padding = '0.8rem 5%';
-        } else {
-            navbar.style.background = 'rgba(45, 27, 78, 0.95)';
-            navbar.style.padding = '1rem 5%';
-        }
-    });
-}
-
-// Counter animation for ministry stats
-const counters = document.querySelectorAll('.stat-number');
-if (typeof gsap !== 'undefined') {
-    counters.forEach(counter => {
-        const target = parseInt(counter.innerText);
-        const suffix = counter.innerText.replace(/[0-9]/g, '');
-        gsap.fromTo(counter,
-            { innerHTML: 0 },
-            {
-                innerHTML: target,
-                duration: 2,
-                snap: { innerHTML: 1 },
-                scrollTrigger: { trigger: counter, start: "top 85%" },
-                onUpdate: function() {
-                    counter.innerHTML = Math.ceil(this.targets()[0].innerHTML) + suffix;
-                }
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Main.js loaded!');
+    
+    // ===== HAMBURGER MENU =====
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    
+    console.log('Hamburger element:', hamburger);
+    console.log('NavLinks element:', navLinks);
+    
+    if (hamburger && navLinks) {
+        // Toggle menu on hamburger click
+        hamburger.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Toggle active class
+            navLinks.classList.toggle('active');
+            
+            // Toggle hamburger icon (bars ↔ X)
+            const icon = hamburger.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
             }
-        );
-    });
-}
-
-// Handle window resize
-let resizeTimer;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-        // Reset nav on resize if needed
-        if (window.innerWidth > 968) {
-            if (navLinks) navLinks.classList.remove('active');
-            if (mobileMenu) mobileMenu.classList.remove('active');
-            document.body.style.overflow = 'auto';
+            
+            console.log('Menu toggled! Active:', navLinks.classList.contains('active'));
+        });
+        
+        // Close menu when clicking a link
+        const links = navLinks.querySelectorAll('a');
+        links.forEach(function(link) {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+                const icon = hamburger.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+                navLinks.classList.remove('active');
+                const icon = hamburger.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    }
+    
+    // ===== MINISTRY TABS =====
+    window.openTab = function(evt, tabName) {
+        const card = evt.target.closest('.ministry-card');
+        const tabContents = card.querySelectorAll('.tab-content');
+        tabContents.forEach(function(content) {
+            content.classList.remove('active');
+            content.style.display = 'none';
+        });
+        
+        const tabBtns = card.querySelectorAll('.tab-btn');
+        tabBtns.forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+        
+        const selectedTab = document.getElementById(tabName);
+        if (selectedTab) {
+            selectedTab.classList.add('active');
+            selectedTab.style.display = 'block';
         }
-    }, 250);
+        
+        evt.currentTarget.classList.add('active');
+    };
+    
+    // Initialize tabs
+    document.querySelectorAll('.ministry-card').forEach(function(card) {
+        const firstTabBtn = card.querySelector('.tab-btn');
+        const firstTabContent = card.querySelector('.tab-content');
+        if (firstTabBtn && firstTabContent) {
+            card.querySelectorAll('.tab-content').forEach(function(content) {
+                content.style.display = 'none';
+            });
+            firstTabContent.style.display = 'block';
+            firstTabContent.classList.add('active');
+            firstTabBtn.classList.add('active');
+        }
+    });
+    
+    // ===== NAVBAR SCROLL =====
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
+    
+    console.log('All scripts ready!');
 });

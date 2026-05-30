@@ -1,0 +1,55 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<!-- Admin Hero -->
+<section class="hero" style="min-height: 40vh;">
+    <div class="hero-content">
+        <div class="hero-badge">Admin Portal</div>
+        <h1>Admin Dashboard</h1>
+        <p>Welcome, {{ user.first_name|default:user.username }}!</p>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="mvp-section">
+    <div class="mvp-grid">
+        <div class="mvp-card">
+            <div class="stat-number" style="font-size: 3rem; color: #d4af37;">{{ total_events }}</div>
+            <div class="stat-label">Total Events</div>
+        </div>
+        <div class="mvp-card">
+            <div class="stat-number" style="font-size: 3rem; color: #d4af37;">{{ total_sermons }}</div>
+            <div class="stat-label">Total Sermons</div>
+        </div>
+        <div class="mvp-card">
+            <div class="stat-number" style="font-size: 3rem; color: #d4af37;">{{ recent_messages.count }}</div>
+            <div class="stat-label">Contact Messages</div>
+        </div>
+    </div>
+    
+    <!-- Quick Links -->
+    <div style="margin-top: 3rem; text-align: center;">
+        <a href="/admin/" class="btn btn-primary" style="margin: 0.5rem;">Django Admin Panel</a>
+        <a href="{% url 'home' %}" class="btn btn-secondary" style="margin: 0.5rem;">View Website</a>
+    </div>
+    
+    <!-- Recent Messages -->
+    <div style="margin-top: 3rem;">
+        <h2 style="color: #d4af37; font-family: 'Cinzel', serif; margin-bottom: 1.5rem;">Recent Contact Messages</h2>
+        {% if recent_messages %}
+            {% for message in recent_messages %}
+            <div class="mvp-card" style="margin-bottom: 1rem;">
+                <strong>{{ message.name }}</strong> - {{ message.subject }}
+                <p style="color: #f8f9fa; margin-top: 0.5rem;">{{ message.message|truncatewords:20 }}</p>
+                <small style="color: #f4e5c2;">{{ message.created_at|date:"M d, Y" }}</small>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No messages yet.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

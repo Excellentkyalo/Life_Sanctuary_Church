@@ -1,105 +1,119 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}Contact - {{ site_settings.church_name }}{% endblock %}
+{% block title %}Contact - Life Sanctuary Church{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-section { padding: 80px 5%; }
+    .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; max-width: 1200px; margin: 0 auto; }
+    .contact-info h3 { color: #d4af37; font-family: 'Cinzel', serif; margin-bottom: 30px; font-size: 1.8rem; }
+    .contact-item { display: flex; gap: 15px; margin-bottom: 25px; }
+    .contact-icon { font-size: 1.5rem; color: #d4af37; min-width: 30px; }
+    .contact-details h4 { color: #f4e5c2; margin-bottom: 8px; font-weight: 600; }
+    .contact-details p { color: #f8f9fa; line-height: 1.8; }
+    .social-links { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+    .social-link { width: 45px; height: 45px; border-radius: 50%; background: rgba(212, 175, 55, 0.2); display: flex; align-items: center; justify-content: center; color: #d4af37; font-size: 1.2rem; transition: all 0.3s; text-decoration: none; }
+    .social-link:hover { background: #d4af37; color: #2d1b4e; transform: translateY(-3px); }
+    .map-container { border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); }
+    .map-placeholder { width: 100%; height: 400px; }
+    .map-placeholder iframe { width: 100%; height: 100%; border: none; }
+    .form-control-custom { width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-family: 'Poppins', sans-serif; font-size: 1rem; }
+    .form-control-custom:focus { outline: none; border-color: #d4af37; }
+    @media (max-width: 768px) { .contact-container { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero" style="min-height: 50vh;">
+<section class="hero">
     <div class="hero-content">
         <div class="hero-badge">Get in Touch</div>
         <h1>Contact Us</h1>
-        <p class="hero-description">
-            We'd love to hear from you and welcome you to our church family
-        </p>
+        <p>We'd love to hear from you and welcome you to our church family</p>
     </div>
 </section>
 
-<!-- Contact Section -->
-<section class="contact-section">
+<!-- Contact Information + Map -->
+<section class="contact-section" id="contact">
+    <div class="section-header">
+        <div class="section-badge">Visit Us</div>
+        <h2 class="section-title">Get in Touch</h2>
+        <p class="section-subtitle">We'd love to hear from you and welcome you to our church family</p>
+    </div>
+    
     <div class="contact-container">
-        <div class="contact-info fade-in">
+        <div class="contact-info">
             <h3>Contact Information</h3>
-            
             <div class="contact-item">
                 <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
                 <div class="contact-details">
                     <h4>Church Address</h4>
-                    <p>{{ site_settings.address|default:"Nairobi, Kenya" }}</p>
+                    <p>Nairobi, Kenya</p>
                 </div>
             </div>
-            
             <div class="contact-item">
                 <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
                 <div class="contact-details">
                     <h4>Phone Numbers</h4>
-                    <p>Pastoral Office: {{ site_settings.phone_primary|default:"+254 713 349691" }}<br>
-                    Administrative: {{ site_settings.phone_secondary|default:"+254 722 881267" }}</p>
+                    <p>Pastoral Office: +254 713 349691<br>Administrative Office: +254 722 881267</p>
                 </div>
             </div>
-            
             <div class="contact-item">
                 <div class="contact-icon"><i class="fas fa-envelope"></i></div>
                 <div class="contact-details">
                     <h4>Email Address</h4>
-                    <p>{{ site_settings.email|default:"info@lifesanctuarychurch.org" }}</p>
+                    <p>info@lifesanctuarychurch.org<br>pastor@lifesanctuarychurch.org</p>
                 </div>
             </div>
-            
             <div class="social-links">
-                {% if site_settings.youtube_url %}
-                <a href="{{ site_settings.youtube_url }}" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
-                {% endif %}
-                {% if site_settings.facebook_url %}
-                <a href="{{ site_settings.facebook_url }}" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                {% endif %}
-                {% if site_settings.instagram_url %}
-                <a href="{{ site_settings.instagram_url }}" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
-                {% endif %}
+                <a href="https://www.youtube.com/@lifesanctuarychurchkwa-reu8729" target="_blank" class="social-link" title="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="#" target="_blank" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://web.facebook.com/people/Life-Sanctuary-Church/100067613066530/" target="_blank" class="social-link" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" target="_blank" class="social-link" title="TikTok"><i class="fab fa-tiktok"></i></a>
             </div>
         </div>
         
-        <div class="map-container fade-in">
-            {{ site_settings.google_maps_embed|safe }}
+        <div class="map-container">
+            <div class="map-placeholder">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.7665625229624!2d36.86640807361098!3d-1.3156139986718944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f130014fb0273%3A0xd632d2744c464460!2sLife%20Sanctuary%20Church%2C%20Kwa%20Ruben!5e0!3m2!1sen!2ske!4v1771671092293!5m2!1sen!2ske" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- Contact Form -->
 <section class="mvp-section">
-    <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 5%;">
-        <div class="section-header fade-in">
-            <div class="section-badge">Send Message</div>
-            <h2 class="section-title">Contact Form</h2>
-        </div>
-        <div class="mvp-card fade-in">
-            <form method="POST">
-                {% csrf_token %}
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                    <div>
-                        <label style="color: var(--secondary-gold); margin-bottom: 0.5rem; display: block;">Your Name *</label>
-                        <input type="text" name="name" class="form-control-custom" value="{{ form.name.value|default:'' }}" required>
-                    </div>
-                    <div>
-                        <label style="color: var(--secondary-gold); margin-bottom: 0.5rem; display: block;">Your Email *</label>
-                        <input type="email" name="email" class="form-control-custom" value="{{ form.email.value|default:'' }}" required>
-                    </div>
+    <div class="section-header">
+        <h2 class="section-title">Send Us a Message</h2>
+    </div>
+    <div class="mvp-card" style="max-width: 800px; margin: 0 auto;">
+        <form method="POST">
+            {% csrf_token %}
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div>
+                    <label style="color: #f4e5c2; margin-bottom: 0.5rem; display: block;">Your Name *</label>
+                    {{ form.name }}
                 </div>
-                <div style="margin-top: 1.5rem;">
-                    <label style="color: var(--secondary-gold); margin-bottom: 0.5rem; display: block;">Phone (Optional)</label>
-                    <input type="text" name="phone" class="form-control-custom" value="{{ form.phone.value|default:'' }}">
+                <div>
+                    <label style="color: #f4e5c2; margin-bottom: 0.5rem; display: block;">Your Email *</label>
+                    {{ form.email }}
                 </div>
-                <div style="margin-top: 1.5rem;">
-                    <label style="color: var(--secondary-gold); margin-bottom: 0.5rem; display: block;">Subject *</label>
-                    <input type="text" name="subject" class="form-control-custom" value="{{ form.subject.value|default:'' }}" required>
-                </div>
-                <div style="margin-top: 1.5rem;">
-                    <label style="color: var(--secondary-gold); margin-bottom: 0.5rem; display: block;">Message *</label>
-                    <textarea name="message" class="form-control-custom" rows="5" required>{{ form.message.value|default:'' }}</textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" style="margin-top: 2rem; width: 100%;">Send Message</button>
-            </form>
-        </div>
+            </div>
+            <div style="margin-top: 1.5rem;">
+                <label style="color: #f4e5c2; margin-bottom: 0.5rem; display: block;">Phone (Optional)</label>
+                {{ form.phone }}
+            </div>
+            <div style="margin-top: 1.5rem;">
+                <label style="color: #f4e5c2; margin-bottom: 0.5rem; display: block;">Subject *</label>
+                {{ form.subject }}
+            </div>
+            <div style="margin-top: 1.5rem;">
+                <label style="color: #f4e5c2; margin-bottom: 0.5rem; display: block;">Message *</label>
+                {{ form.message }}
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 2rem; width: 100%;">Send Message</button>
+        </form>
     </div>
 </section>
 {% endblock %}

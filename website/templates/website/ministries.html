@@ -1,316 +1,203 @@
 {% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Ministries - Life Sanctuary Church{% endblock %}
+
 {% block content %}
-<section class="hero" style="min-height: 50vh;"><div class="hero-content"><h1>Ministries</h1></div></section>
-<!-- Ministries Section WITH MEDIA GALLERIES -->
-<section class="ministries-section" id="ministries">
-<div class="section-header fade-in">
-<div class="section-badge">Our Ministries</div>
-<h2 class="section-title">Departments & Groups</h2>
-<p class="section-subtitle">Explore our ministries, view photos, and watch our videos</p>
-</div>
-<div class="ministries-grid">
-<!-- Ministry Card Template: Ministers -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-min')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-min')">Photos</button>
-<button class="tab-btn" onclick="openTab(event, 'video-min')">Videos</button>
-</div>
-<div id="info-min" class="tab-content active">
-<div class="ministry-info">
-<h3>Ministers</h3>
-<p>Senior Minister,The Bishop,Pastors and departmental heads</p>
-</div>
-</div>
-<div id="gallery-min" class="tab-content">
-<div class="gallery-grid">
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-</div>
-</div>
-<div id="video-min" class="tab-content">
-<div class="video-container"><div class="gallery-placeholder" style="height:100%">Add Video Embed</div></div>
-</div>
-</div>
-
-<!-- Ministry Card Template: Blessed Voices -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-bv')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-bv')">Photos</button>
-<button class="tab-btn" onclick="openTab(event, 'video-bv')">Videos</button>
-</div>
-<div id="info-bv" class="tab-content active">
-<div class="ministry-info">
-<h3>Blessed Voices</h3>
-<p>Our praise and worship leading the congregation into the presence of God through powerful worship and praise.</p>
-</div>
-</div>
-<div id="gallery-bv" class="tab-content">
-<div class="gallery-grid">
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-</div>
-</div>
-<div id="video-bv" class="tab-content">
-<div class="video-container">
-<video width="100%" controls>
-<source src="videos/Blessed-voices.mp4">
-</video>
-</div>
-</div>
-</div>
-
-<!-- Ministry Card Template: Glorious Voices -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-gv')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-gv')">Photos</button>
-<button class="tab-btn" onclick="openTab(event, 'video-gv')">Videos</button>
-</div>
-<div id="info-gv" class="tab-content active">
-<div class="ministry-info">
-<h3>Glorious Voices</h3>
-<p>Our Church choir ministering glorious songs in God's presence.</p>
-<div class="social-links">
-<!-- YouTube -->
-<a href="https://www.youtube.com/@GloryMelodiesLifeSanctuaryChur" target="_blank" class="social-link" title="YouTube">
-<i class="fab fa-youtube"></i>
-</a>
-<!-- Facebook -->
-<a href="https://web.facebook.com/people/Life-Sanctuary-Church/100067613066530/?_rdc=1&_rdr#" target="_blank" class="social-link" title="Facebook">
-<i class="fab fa-facebook-f"></i>
-</a>
-</div>
-</div>
-</div>
-<div id="gallery-gv" class="tab-content">
-<div class="gallery-grid">
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-</div>
-</div>
-<div id="video-gv" class="tab-content">
-<div class="video-container">
-<iframe width="100%" height="400" src="https://www.youtube.com/embed/UjkeVhvdies?si=5__SzJEC7oNLGKGg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-</div>
-</div>
-
-<!-- Ministry Card Template: Heavenly Sounds -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-hs')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-hs')">Photos</button>
-<button class="tab-btn" onclick="openTab(event, 'video-hs')">Videos</button>
-</div>
-<div id="info-hs" class="tab-content active">
-<div class="ministry-info">
-<h3>Heavenly Sounds</h3>
-<p>A dynamic team of young God-fearing people minustering in our services.</p>
-</div>
-</div>
-<div id="gallery-hs" class="tab-content">
-<div class="gallery-grid">
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-</div>
-</div>
-<div id="video-hs" class="tab-content">
-<div class="video-container"><div class="gallery-placeholder" style="height:100%">Add Video Embed</div></div>
-</div>
-</div>
-
-<!-- Ministry Card Template: Tech & Media -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-tech')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-tech')">Photos</button>
-</div>
-<div id="info-tech" class="tab-content active">
-<div class="ministry-info">
-<h3>Mystical technical services & Imaging team</h3>
-<p>Behind the scenes heroes ensuring our services run smoothly. Sound, lighting, and streaming.</p>
-</div>
-</div>
-<div id="gallery-tech" class="tab-content">
-<div class="gallery-grid">
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-</div>
-</div>
-</div>
-
-<!-- Ministry Card Template: Vision Bearers -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-vb')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-vb')">Photos</button>
-</div>
-<!-- Info Tab -->
-<div id="info-vb" class="tab-content active">
-<div class="ministry-info">
-<h3>The True Visionaries</h3>
-<p>Leading strong God-fearing families  by Visionary fathers.</p>
-</div>
-</div>
-<!-- Gallery Tab -->
-<div id="gallery-vb" class="tab-content">
-<div class="gallery-grid">
-<!-- Replace src with actual image URLs -->
-<div class="gallery-item"><img src="https://via.placeholder.com/300x200/4a2c7a/ffffff?text=Event+1" alt="Ministry Photo"></div>
-<div class="gallery-item"><img src="https://via.placeholder.com/300x200/4a2c7a/ffffff?text=Event+2" alt="Ministry Photo"></div>
-<div class="gallery-item"><img src="https://via.placeholder.com/300x200/4a2c7a/ffffff?text=Event+3" alt="Ministry Photo"></div>
-<div class="gallery-item"><img src="https://via.placeholder.com/300x200/4a2c7a/ffffff?text=Event+4" alt="Ministry Photo"></div>
-</div>
-</div>
-</div>
-
-<!-- Ministry Card Template: Daughters of Zion -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-doz')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-doz')">Photos</button>
-</div>
-<div id="info-doz" class="tab-content active">
-<div class="ministry-info">
-<h3>Daughters of Zion</h3>
-<p>Women of virtue and strength, committed to prayer, mentorship, and community service.</p>
-</div>
-</div>
-<div id="gallery-doz" class="tab-content">
-<div class="gallery-grid">
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-</div>
-</div>
-</div>
-
-<!-- Ministry Card Template: Youth -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-youth')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-youth')">Photos</button>
-</div>
-<div id="info-youth" class="tab-content active">
-<div class="ministry-info">
-<h3>Excel Ministry</h3>
-<p>Raising a generation of bold, Spirit-filled young people who are not afraid to take the Kingdom by force.</p>
-</div>
-</div>
-<div id="gallery-youth" class="tab-content">
-<div class="gallery-grid">
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-</div>
-</div>
-</div>
-
-<!-- Ministry Card Template: Sunday School -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-ss')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-ss')">Photos</button>
-</div>
-<div id="info-ss" class="tab-content active">
-<div class="ministry-info">
-<h3>Children Ministry</h3>
-<p>Raising the next generation of church members</p>
-</div>
-</div>
-<div id="gallery-ss" class="tab-content">
-<div class="gallery-grid">
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-</div>
-</div>
-</div>
-
-<!-- Ministry Card Template: Dorcas Ministry -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-dorcas')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-dorcas')">Photos</button>
-</div>
-<div id="info-dorcas" class="tab-content active">
-<div class="ministry-info">
-<h3>Dorcas  Ministry</h3>
-<p>Sharing the love and compassion of Christ with our substances to the needy</p>
-</div>
-</div>
-<div id="gallery-dorcas" class="tab-content">
-<div class="gallery-grid">
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-</div>
-</div>
-</div>
-
-<!-- Ministry Card Template: Discipleship -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-disc')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-disc')">Photos</button>
-</div>
-<div id="info-disc" class="tab-content active">
-<div class="ministry-info">
-<h3>Neema Discipleship</h3>
-<p>Grounding believers in faith by the word of God</p>
-</div>
-</div>
-<div id="gallery-disc" class="tab-content">
-<div class="gallery-grid">
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-</div>
-</div>
-</div>
-
-<!-- Ministry Card Template: Home fellowship -->
-<div class="ministry-card fade-in">
-<div class="ministry-tabs">
-<button class="tab-btn active" onclick="openTab(event, 'info-hf')">Info</button>
-<button class="tab-btn" onclick="openTab(event, 'gallery-hf')">Photos</button>
-</div>
-<div id="info-hf" class="tab-content active">
-<div class="ministry-info">
-<h3>Heart to Heart Fellowship</h3>
-<p>Growing the church through home cells</p>
-</div>
-</div>
-<div id="gallery-hf" class="tab-content">
-<div class="gallery-grid">
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-<div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
-</div>
-</div>
-</div>
-</div>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">Get Involved</div>
+        <h1>Our Ministries</h1>
+        <p>Discover ways to serve and grow in your faith</p>
+    </div>
 </section>
 
+<!-- Ministries Section with Tabs -->
+<section class="ministries-section" id="ministries">
+    <div class="section-header">
+        <div class="section-badge">Our Ministries</div>
+        <h2 class="section-title">Departments & Groups</h2>
+        <p class="section-subtitle">Explore our ministries, view photos, and watch our videos</p>
+    </div>
+    
+    <div class="ministries-grid">
+        <!-- Ministers -->
+        <div class="ministry-card">
+            <div class="ministry-tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'info-min')">Info</button>
+                <button class="tab-btn" onclick="openTab(event, 'gallery-min')">Photos</button>
+                <button class="tab-btn" onclick="openTab(event, 'video-min')">Videos</button>
+            </div>
+            <div id="info-min" class="tab-content active">
+                <div class="ministry-info">
+                    <h3>Ministers</h3>
+                    <p>Senior Minister, The Bishop, Pastors and departmental heads</p>
+                </div>
+            </div>
+            <div id="gallery-min" class="tab-content">
+                <div class="gallery-grid">
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                </div>
+            </div>
+            <div id="video-min" class="tab-content">
+                <div class="video-container"><div class="gallery-placeholder" style="height:200px">Add Video Embed</div></div>
+            </div>
+        </div>
 
+        <!-- Blessed Voices -->
+        <div class="ministry-card">
+            <div class="ministry-tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'info-bv')">Info</button>
+                <button class="tab-btn" onclick="openTab(event, 'gallery-bv')">Photos</button>
+                <button class="tab-btn" onclick="openTab(event, 'video-bv')">Videos</button>
+            </div>
+            <div id="info-bv" class="tab-content active">
+                <div class="ministry-info">
+                    <h3>Blessed Voices</h3>
+                    <p>Our praise and worship leading the congregation into the presence of God through powerful worship and praise.</p>
+                </div>
+            </div>
+            <div id="gallery-bv" class="tab-content">
+                <div class="gallery-grid">
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                </div>
+            </div>
+            <div id="video-bv" class="tab-content">
+                <div class="video-container">
+                    <video width="100%" controls>
+                        <source src="{% static 'videos/Blessed-voices.mp4' %}">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
 
+        <!-- Glorious Voices -->
+        <div class="ministry-card">
+            <div class="ministry-tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'info-gv')">Info</button>
+                <button class="tab-btn" onclick="openTab(event, 'gallery-gv')">Photos</button>
+                <button class="tab-btn" onclick="openTab(event, 'video-gv')">Videos</button>
+            </div>
+            <div id="info-gv" class="tab-content active">
+                <div class="ministry-info">
+                    <h3>Glorious Voices</h3>
+                    <p>Our Church choir ministering glorious songs in God's presence.</p>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@GloryMelodiesLifeSanctuaryChur" target="_blank" class="social-link" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://web.facebook.com/people/Life-Sanctuary-Church/100067613066530/" target="_blank" class="social-link" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div id="gallery-gv" class="tab-content">
+                <div class="gallery-grid">
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                </div>
+            </div>
+            <div id="video-gv" class="tab-content">
+                <div class="video-container">
+                    <iframe width="100%" height="300" src="https://www.youtube.com/embed/UjkeVhvdies" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
 
+        <!-- Excel Ministry -->
+        <div class="ministry-card">
+            <div class="ministry-tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'info-youth')">Info</button>
+                <button class="tab-btn" onclick="openTab(event, 'gallery-youth')">Photos</button>
+            </div>
+            <div id="info-youth" class="tab-content active">
+                <div class="ministry-info">
+                    <h3>Excel Ministry</h3>
+                    <p>Raising a generation of bold, Spirit-filled young people who are not afraid to take the Kingdom by force.</p>
+                </div>
+            </div>
+            <div id="gallery-youth" class="tab-content">
+                <div class="gallery-grid">
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Children Ministry -->
+        <div class="ministry-card">
+            <div class="ministry-tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'info-ss')">Info</button>
+                <button class="tab-btn" onclick="openTab(event, 'gallery-ss')">Photos</button>
+            </div>
+            <div id="info-ss" class="tab-content active">
+                <div class="ministry-info">
+                    <h3>Children Ministry</h3>
+                    <p>Raising the next generation of church members</p>
+                </div>
+            </div>
+            <div id="gallery-ss" class="tab-content">
+                <div class="gallery-grid">
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daughters of Zion -->
+        <div class="ministry-card">
+            <div class="ministry-tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'info-doz')">Info</button>
+                <button class="tab-btn" onclick="openTab(event, 'gallery-doz')">Photos</button>
+            </div>
+            <div id="info-doz" class="tab-content active">
+                <div class="ministry-info">
+                    <h3>Daughters of Zion</h3>
+                    <p>Women of virtue and strength, committed to prayer, mentorship, and community service.</p>
+                </div>
+            </div>
+            <div id="gallery-doz" class="tab-content">
+                <div class="gallery-grid">
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dorcas Ministry -->
+        <div class="ministry-card">
+            <div class="ministry-tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'info-dorcas')">Info</button>
+                <button class="tab-btn" onclick="openTab(event, 'gallery-dorcas')">Photos</button>
+            </div>
+            <div id="info-dorcas" class="tab-content active">
+                <div class="ministry-info">
+                    <h3>Dorcas Ministry</h3>
+                    <p>Sharing the love and compassion of Christ with our substances to the needy</p>
+                </div>
+            </div>
+            <div id="gallery-dorcas" class="tab-content">
+                <div class="gallery-grid">
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">Add Image</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
