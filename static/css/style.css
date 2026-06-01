@@ -30,10 +30,11 @@ body {
     overflow-x: hidden;
     width: 100%;
     min-height: 100vh;
+    line-height: 1.6;
 }
 
 /* ============================================
-   LOADING SCREEN - FULLY RESPONSIVE
+   LOADING SCREEN
    ============================================ */
 #loader {
     position: fixed;
@@ -113,7 +114,7 @@ body {
 }
 
 /* ============================================
-   NAVIGATION - RESPONSIVE
+   NAVIGATION
    ============================================ */
 .navbar {
     position: fixed;
@@ -131,7 +132,7 @@ body {
 }
 
 .navbar.scrolled {
-    background: rgba(45, 27, 78, 0.98) !important;  /* Keep purple on scroll */
+    background: rgba(45, 27, 78, 0.98) !important;
     padding: 0.8rem 5%;
 }
 
@@ -193,9 +194,7 @@ body {
     width: 100%;
 }
 
-/* ============================================
-   MOBILE MENU ICON (HAMBURGER)
-   ============================================ */
+/* Mobile Menu Icon */
 .mobile-menu {
     display: none;
     flex-direction: column;
@@ -214,25 +213,22 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Hamburger Animation to X */
 .mobile-menu.active .bar:nth-child(1) {
     transform: translateY(9px) rotate(45deg);
 }
-
 .mobile-menu.active .bar:nth-child(2) {
     opacity: 0;
 }
-
 .mobile-menu.active .bar:nth-child(3) {
     transform: translateY(-9px) rotate(-45deg);
 }
 
 /* ============================================
-   HERO SECTION - RESPONSIVE
+   HERO SECTION
    ============================================ */
 .hero {
     margin-top: 80px;
-    min-height: 100vh;
+    min-height: 90vh; /* Slightly reduced for better mobile view */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -269,7 +265,7 @@ body {
 
 .hero h1 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 6vw, 5rem);
+    font-size: clamp(2.2rem, 6vw, 5rem);
     margin-bottom: 1rem;
     line-height: 1.2;
     background: linear-gradient(135deg, var(--white) 0%, var(--primary-gold) 100%);
@@ -321,7 +317,7 @@ body {
 }
 
 .btn {
-    padding: 1rem 2.5rem;
+    padding: 0.9rem 2.2rem;
     border: none;
     border-radius: 50px;
     font-family: 'Poppins', sans-serif;
@@ -358,14 +354,14 @@ body {
    SECTIONS GENERAL
    ============================================ */
 section {
-    padding: 6rem 5%;
+    padding: 5rem 5%; /* Reduced padding for mobile friendliness */
     position: relative;
     width: 100%;
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 }
 
 .section-badge {
@@ -405,7 +401,7 @@ section {
 .mvp-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 3rem;
+    gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -415,7 +411,7 @@ section {
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     border-radius: 20px;
-    padding: 3rem 2rem;
+    padding: 2.5rem 1.5rem;
     text-align: center;
     transition: all 0.3s ease;
     position: relative;
@@ -436,14 +432,14 @@ section {
 
 .mvp-card h3 {
     font-family: 'Cinzel', serif;
-    font-size: clamp(1.5rem, 3vw, 1.8rem);
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
     color: var(--primary-gold);
     margin-bottom: 1rem;
 }
 
 .mvp-card p {
     color: var(--off-white);
-    line-height: 1.8;
+    line-height: 1.7;
     font-size: clamp(0.9rem, 1.5vw, 0.95rem);
 }
 
@@ -532,7 +528,7 @@ section {
 }
 
 /* ============================================
-   MINISTRIES WITH MEDIA GALLERY
+   MINISTRIES
    ============================================ */
 .ministries-section {
     background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(45, 27, 78, 0.95) 100%);
@@ -541,7 +537,7 @@ section {
 .ministries-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 3rem;
+    gap: 2rem;
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -644,36 +640,6 @@ section {
     transform: scale(1.1);
 }
 
-.gallery-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #666;
-    font-size: 0.8rem;
-    background: rgba(0,0,0,0.5);
-}
-
-.video-container {
-    position: relative;
-    padding-bottom: 56.25%;
-    height: 0;
-    background: #000;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 1rem;
-}
-
-.video-container iframe, .video-container video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
 /* ============================================
    CONTACT SECTION
    ============================================ */
@@ -686,7 +652,7 @@ section {
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 3rem;
 }
 
 .contact-info h3 {
@@ -771,24 +737,6 @@ section {
     flex-direction: column;
 }
 
-.map-placeholder {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--royal-purple) 0%, var(--light-purple) 100%);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: var(--secondary-gold);
-}
-
-.map-placeholder iframe {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-}
-
 /* ============================================
    FOOTER
    ============================================ */
@@ -856,27 +804,31 @@ footer {
 }
 
 /* ============================================
-   RESPONSIVE DESIGN - ALL DEVICES
+   RESPONSIVE DESIGN - MOBILE OPTIMIZED
    ============================================ */
 
 /* Tablets and Below (968px) */
 @media (max-width: 968px) {
     .nav-links {
         position: fixed;
-        top: 0;
+        top: 70px; /* Pushes menu BELOW the navbar header */
         right: -100%;
-        width: 70%;
-        max-width: 400px;
-        height: 100vh;
+        width: 80%; /* Compact width */
+        max-width: 300px;
+        height: auto; /* Auto height, not full screen */
+        max-height: 80vh;
         background: rgba(45, 27, 78, 0.98);
         backdrop-filter: blur(10px);
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-        gap: 3rem;
-        transition: right 0.4s ease;
+        justify-content: flex-start;
+        gap: 1.5rem;
+        transition: right 0.3s ease-in-out;
         border-left: 2px solid var(--primary-gold);
-        padding: 2rem;
+        padding: 20px 0;
+        overflow-y: auto; /* Scrollable if needed */
+        box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+        z-index: 1000;
     }
     
     .nav-links.active {
@@ -884,7 +836,10 @@ footer {
     }
     
     .nav-links a {
-        font-size: 1.2rem;
+        font-size: 1.1rem; /* Smaller, readable font */
+        padding: 10px 20px;
+        width: 100%;
+        text-align: center;
     }
     
     .mobile-menu {
@@ -914,11 +869,12 @@ footer {
 /* Mobile Devices (768px) */
 @media (max-width: 768px) {
     section {
-        padding: 4rem 4%;
+        padding: 3rem 4%; /* Reduced padding for more content space */
     }
     
     .hero {
         margin-top: 70px;
+        min-height: 80vh;
     }
     
     .hero-content {
@@ -927,7 +883,7 @@ footer {
     
     .mvp-grid {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 1.5rem;
     }
     
     .schedule-grid {
@@ -1000,10 +956,11 @@ footer {
     
     .hero-description {
         font-size: 0.95rem;
+        line-height: 1.6;
     }
     
     .section-header {
-        margin-bottom: 2.5rem;
+        margin-bottom: 2rem;
     }
     
     .mvp-card {
@@ -1015,7 +972,7 @@ footer {
     }
     
     .ministries-grid {
-        gap: 2rem;
+        gap: 1.5rem;
     }
     
     .tab-content {
@@ -1052,30 +1009,5 @@ footer {
     
     .gallery-item {
         height: 120px;
-    }
-}
-
-/* Landscape Orientation on Mobile */
-@media (max-height: 500px) and (orientation: landscape) {
-    .hero {
-        min-height: auto;
-        padding: 100px 2rem;
-    }
-    
-    .nav-links {
-        width: 50%;
-    }
-    
-    .loader-content {
-        padding: 10px;
-    }
-    
-    .loader-cross {
-        font-size: 2rem;
-        margin-bottom: 10px;
-    }
-    
-    .loader-sub {
-        font-size: 1.3rem;
     }
 }
