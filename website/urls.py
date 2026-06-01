@@ -24,6 +24,5 @@ urlpatterns = [
     # ==================== ADMIN ONLY PAGES ====================
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
 
-    path('reset-db/', views.reset_database, name='reset_db'),
        
 ]
