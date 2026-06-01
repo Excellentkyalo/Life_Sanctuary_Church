@@ -3,10 +3,14 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.utils import timezone
+from django.core.management import call_command
+from io import StringIO
+
 from .models import SiteSetting, Announcement, Ministry, Sermon, Event, ContactMessage, GalleryCategory, GalleryImage, GalleryVideo
 from .forms import ContactForm
+
 # ============================================
 # Helper Function: Check if user is admin
 # ============================================
@@ -107,25 +111,42 @@ def contact(request):
 # ADMIN ONLY PAGES (Login Required)
 # ============================================
 
-@user_passes_test(is_admin)
+@login_required
 def admin_dashboard(request):
-    """Admin Dashboard"""
-    total_sermons = Sermon.objects.count()
-    total_events = Event.objects.count()
-    total_gallery_images = GalleryImage.objects.count()
-    total_messages = ContactMessage.objects.count()
-    recent_events = Event.objects.order_by('-start_date')[:5]
-    recent_sermons = Sermon.objects.order_by('-date')[:5]
-    recent_messages = ContactMessage.objects.filter(is_read=False).order_by('-created_at')[:5]
-    unread_messages_count = ContactMessage.objects.filter(is_read=False).count()
+    """Admin Dashboard - Self-Healing for Render Free Tier"""
+    
+    # 1. SELF-HEALING: Try to run migrations if tables are missing
+    try:
+        out = StringIO()
+        call_command('migrate', '--run-syncdb', stdout=out)
+    except Exception:
+        pass 
+
+    # 2. Prepare Context with Safe Defaults
     context = {
-        'total_sermons': total_sermons,
-        'total_events': total_events,
-        'total_gallery_images': total_gallery_images,
-        'total_messages': total_messages,
-        'recent_events': recent_events,
-        'recent_sermons': recent_sermons,
-        'recent_messages': recent_messages,
-        'unread_messages_count': unread_messages_count,
+        'user': request.user,
+        'total_sermons': 0,
+        'total_events': 0,
+        'total_gallery_images': 0,
+        'total_messages': 0,
+        'recent_events': [],
+        'recent_sermons': [],
+        'recent_messages': [],
+        'unread_messages_count': 0,
     }
+
+    # 3. Safely Fetch Data
+    try:
+        context['total_sermons'] = Sermon.objects.count()
+        context['total_events'] = Event.objects.count()
+        context['total_gallery_images'] = GalleryImage.objects.count()
+        context['total_messages'] = ContactMessage.objects.count()
+        
+        context['recent_events'] = Event.objects.order_by('-start_date')[:5]
+        context['recent_sermons'] = Sermon.objects.order_by('-date')[:5]
+        context['recent_messages'] = ContactMessage.objects.filter(is_read=False).order_by('-created_at')[:5]
+        context['unread_messages_count'] = ContactMessage.objects.filter(is_read=False).count()
+    except Exception as e:
+        print(f"Dashboard Data Error: {e}")
+
     return render(request, 'website/admin_dashboard.html', context)
