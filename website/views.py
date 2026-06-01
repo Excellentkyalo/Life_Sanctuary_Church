@@ -150,3 +150,32 @@ def admin_dashboard(request):
         print(f"Dashboard Data Error: {e}")
 
     return render(request, 'website/admin_dashboard.html', context)
+
+import os
+from django.http import HttpResponse
+from django.core.management import call_command
+
+def reset_database(request):
+    # SECURITY: Only allow this if you add a secret code to the URL
+    secret = request.GET.get('code')
+    if secret != 'RESET2026':
+        return HttpResponse("🔒 Access Denied", status=403)
+
+    db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db.sqlite3')
+    
+    try:
+        # 1. Delete the old database file
+        if os.path.exists(db_path):
+            os.remove(db_path)
+        
+        # 2. Create a fresh database with all tables
+        call_command('migrate', '--run-syncdb', verbosity=0)
+        
+        # 3. Create a default superuser automatically
+        from django.contrib.auth.models import User
+        if not User.objects.filter(username='admin').exists():
+            User.objects.create_superuser('admin', 'kyaloexcellent@gmail.com', 'Life Sanctuary Church')
+            
+        return HttpResponse("✅ Database Reset Successful! <br>1. Old DB deleted.<br>2. New tables created.<br>3. Admin user 'admin' created.<br><br><a href='/admin-dashboard/'>Go to Dashboard</a>")
+    except Exception as e:
+        return HttpResponse(f"❌ Error: {e}")
